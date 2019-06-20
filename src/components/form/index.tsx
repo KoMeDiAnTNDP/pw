@@ -6,6 +6,7 @@ import {API} from "../../core/api";
 import {Button} from "primereact/button";
 import {FormError} from "../formErrors";
 import {Field} from "../field";
+import {Validation} from "../../core/validation";
 
 interface IRegisterProps {
     registration: boolean;
@@ -45,71 +46,39 @@ export class Form extends Component<IRegisterProps, IRegisterState> {
     };
 
     validationFormFields(fieldName: string, value: string) {
-        let fieldValidationMessage = {...this.state.errorMessage};
-        let validForm = {...this.state.validForm};
+        const {errorMessage, validForm} = this.state;
+        const {fieldValidationMessage, validationForm} = new Validation(errorMessage, validForm)
+            .validationFields(fieldName, value);
 
-        switch (fieldName) {
-            case 'username':
-                validForm.validUsername = !/\d+/.test(value) && value.length !== 0;
-                fieldValidationMessage.username = validForm.validUsername ? '' : 'shouldn\'t contain numbers';
-                break;
-            case 'email':
-                // eslint-disable-next-line no-useless-escape
-                const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-                validForm.validEmail = re.test(value.toLowerCase());
-                fieldValidationMessage.email = validForm.validEmail ? '' : 'is invalid';
-                break;
-            case 'password':
-                validForm.validPassword = value.length > 7;
-                fieldValidationMessage.password = validForm.validPassword ? '' : 'is too short';
-                break;
-            default:
-                break
-        }
 
         this.setState({
             errorMessage: fieldValidationMessage,
-            validForm: validForm
+            validForm: validationForm
         }, this.validateForm);
     }
 
     validateForm() {
         const validForm = {...this.state.validForm};
 
-        if (this.props.registration) {
-            validForm.validationForm = validForm.validUsername && validForm.validEmail && validForm.validPassword;
-        }
-        else {
-            validForm.validationForm = validForm.validEmail && validForm.validPassword;
-        }
+        validForm.validationForm = this.props.registration ?
+            validForm.validUsername && validForm.validEmail && validForm.validPassword :
+            validForm.validEmail && validForm.validPassword;
 
         this.setState({validForm: validForm})
     }
 
-    handleUsernameChange = (event: FormEvent<HTMLInputElement>) => {
+    getValue = (id: string, value: string) => {
         const user = {...this.state.user};
-        user.username = event.currentTarget.value;
 
-        this.setState({user: user}, () => this.validationFormFields('username', user.username));
-    };
+        if (id === 'username' || id === 'email' || id === 'password') {
+            user[id] = value;
 
-    handleEmailChange = (event: FormEvent<HTMLInputElement>) => {
-        const user = {...this.state.user};
-        user.email = event.currentTarget.value;
-
-        this.setState({user: user}, () => this.validationFormFields('email', user.email));
-    };
-
-    handlePasswordChange = (event: FormEvent<HTMLInputElement>) => {
-        const user = {...this.state.user};
-        user.password = event.currentTarget.value;
-
-        this.setState({user: user}, () => this.validationFormFields('password', user.password));
+            this.setState({user: user}, () => this.validationFormFields(id, value));
+        }
     };
 
     handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
 
         const api = new API();
         api.registrationOrLogin(this.props.registration, this.state.user)
@@ -118,7 +87,7 @@ export class Form extends Component<IRegisterProps, IRegisterState> {
                     const user = {...this.state.user};
                     user.token = data.id_token;
 
-                    this.setState({user: user, success: true})
+                    this.setState({user: user, success: true});
                     this.props.onSubmit(user);
                 }
                 else {
@@ -126,12 +95,10 @@ export class Form extends Component<IRegisterProps, IRegisterState> {
                     this.setState({failMessage: data, success: false})
                 }
             });
-
-
     };
 
     render() {
-        const {user, validForm, errorMessage, success, failMessage} = this.state;
+        const {validForm, errorMessage, success, failMessage} = this.state;
         const {registration} = this.props;
 
         return (
@@ -144,26 +111,20 @@ export class Form extends Component<IRegisterProps, IRegisterState> {
                 <form className={styles.registerForm} method="POST" onSubmit={this.handleSubmit}>
                     {
                         registration &&
-                        <Field
-                            id='username' value={user.username}
-                            onChange={this.handleUsernameChange} text='Username'
-                            valid={!errorMessage.username}
-                        />
+                        <Field id='username'
+                               valid={!errorMessage.username}
+                               getValue={this.getValue}/>
                     }
-                    <Field
-                        id='email' value={user.email}
-                        onChange={this.handleEmailChange} text='Email'
-                        valid={!errorMessage.email}
-                    />
-                    <Field
-                        id='password' value={user.password}
-                        onChange={this.handlePasswordChange} text='Password'
-                        valid={!errorMessage.password}
-                    />
-                    <Button
-                        className={styles.formButton} type="submit"
-                        label={registration ? 'Sign in' : 'Login'} disabled={!validForm.validationForm}
-                    />
+                    <Field id='email'
+                           valid={!errorMessage.email}
+                           getValue={this.getValue}/>
+                    <Field id='password'
+                           valid={!errorMessage.password}
+                           getValue={this.getValue}/>
+                    <Button className={styles.formButton}
+                            type="submit"
+                            label={registration ? 'Sign in' : 'Login'}
+                            disabled={!validForm.validationForm}/>
                 </form>
                 {
                     !success &&
