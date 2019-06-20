@@ -118,8 +118,8 @@ export class Form extends Component<IRegisterProps, IRegisterState> {
                     const user = {...this.state.user};
                     user.token = data.id_token;
 
-                    this.props.onSubmit(user);
                     this.setState({user: user, success: true})
+                    this.props.onSubmit(user);
                 }
                 else {
 

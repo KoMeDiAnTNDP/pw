@@ -54,7 +54,9 @@ export class Home extends Component{
                     isAuthorized={isAuthorized}
                     user={user}
                 />
-                {openAuthorization && <Authorization onSubmit={this.handleSubmit} onClose={this.handleCloseAuthorizationForm}/>}
+                <Authorization onSubmit={this.handleSubmit}
+                               onClose={this.handleCloseAuthorizationForm}
+                               visible={openAuthorization}/>
             </div>
         )
     }

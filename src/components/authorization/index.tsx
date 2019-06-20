@@ -8,20 +8,18 @@ import logo from '../../pic/parrot.svg'
 import {IUser} from "../../types";
 
 interface IAuthorizationProps {
+    visible: boolean;
     onClose(): void;
     onSubmit(user: IUser): void
 }
 
 interface IAuthorizationState {
     registration: boolean;
-    close: boolean;
 }
 
 export class Authorization extends Component<IAuthorizationProps, IAuthorizationState> {
     state: IAuthorizationState = {
-        registration: true,
-        close: false
-
+        registration: true
     };
 
     handleRegistrationChange = () => {
@@ -34,19 +32,18 @@ export class Authorization extends Component<IAuthorizationProps, IAuthorization
 
     handleClose = () => {
         this.props.onClose();
-        this.setState({close: true});
     };
 
     handleSubmit = (user: IUser) => {
         this.props.onClose();
         this.props.onSubmit(user);
-        this.setState({close: true})
     };
 
     render() {
-        const {registration, close} = this.state;
+        const {registration} = this.state;
+        const {visible} = this.props;
 
-        if (close) {
+        if (!visible) {
             return null;
         }
 
