@@ -1,0 +1,35 @@
+.registerContainer
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.formErrors
+{
+    border: 1px solid #ddd;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+    border-radius: 4px;
+    margin: 10px 0 20px 0;
+}
+
+.registerForm
+{
+    width: 100%;
+}
+
+.formButton
+{
+    width: 100%;
+    text-align: center;
+}
+
+.serverError
+{
+    margin-top: 15px;
+    text-align: center;
+}
+
+.errorMessage
+{
+    color: #a80000;
+}

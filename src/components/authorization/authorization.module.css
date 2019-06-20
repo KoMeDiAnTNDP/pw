@@ -1,0 +1,110 @@
+.wrapper
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: #000b;
+    margin: auto;
+    z-index: 2;
+}
+
+.loginOrRegister
+{
+    width: 550px;
+    height: 500px;
+    margin: auto;
+    padding: 0;
+    background-color: #fff;
+    border-radius: 2px;
+    box-shadow: 0 3px 5px 0 rgba(0, 0, 0, .2), 0 1px 18px 0 rgba(0, 0, 0, .12), 0 6px 10px 0 rgba(0, 0, 0, .14);
+}
+
+.authHead
+{
+    width: 100%;
+    background: #5e35b1;
+    padding: 8px 14px;
+    text-align: center;
+    z-index: 3;
+}
+
+.content
+{
+    padding: 50px 100px;
+    z-index: 3;
+    transition: all .3s ease;
+}
+
+.logo
+{
+    width: 54px;
+    height: 54px;
+}
+
+.choiceAction
+{
+    display: flex;
+    width: 100%;
+}
+
+.showRegisterForm,
+.showFormsDivider
+{
+    opacity: .5;
+    margin-right: 5px;
+}
+
+.showRegisterForm
+{
+    cursor: pointer;
+}
+
+.showLoginForm
+{
+    opacity: .5;
+    cursor: pointer;
+}
+
+.active
+{
+    opacity: 1;
+}
+
+.showRegisterForm:hover,
+.showLoginForm:hover
+{
+    opacity: 1;
+}
+
+.exit
+{
+    margin-left: auto;
+    height: 21px;
+    width: 21px;
+    background-image: url('../../pic/close.svg');
+    cursor: pointer;
+    border-radius: 5px;
+    border: 1px solid #000;
+    transition: box-shadow .3s ease;
+}
+
+.exit:hover
+{
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.7);
+}
+
+@media screen and (max-width: 640px){
+    .loginOrRegister
+    {
+        width: 100%;
+    }
+
+    .content
+    {
+        padding: 50px 25px;
+    }
+}
