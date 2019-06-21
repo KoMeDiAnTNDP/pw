@@ -5,7 +5,6 @@ import {HeadBar} from "../head";
 import {IUserInfo, IUserRegistration} from "../../types";
 import {Authorization} from "../authorization";
 import {API} from "../../core/api";
-import {object} from "prop-types";
 
 interface IHomeState {
     user: IUserInfo;
@@ -53,7 +52,6 @@ export class Home extends Component{
 
     render() {
         const {user, isAuthorized, openAuthorization} = this.state;
-        console.log(user);
 
         return (
             <div className={styles.home}>
