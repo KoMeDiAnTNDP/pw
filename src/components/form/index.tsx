@@ -53,15 +53,7 @@ export class Form extends Component<IRegisterProps, IRegisterState> {
         this.setState({
             errorMessage: fieldValidationMessage,
             validForm: validationForm
-        }, () => this.validateForm(validation));
-    }
-
-    validateForm(validation: Validation) {
-        const validForm = {...this.state.validForm};
-
-        validForm.validationForm = validation.validationForm(this.props.registration);
-
-        this.setState({validForm: validForm})
+        });
     }
 
     getValue = (id: string, value: string) => {
@@ -97,6 +89,7 @@ export class Form extends Component<IRegisterProps, IRegisterState> {
     render() {
         const {validForm, errorMessage, success, failMessage} = this.state;
         const {registration} = this.props;
+        const activeButton = new Validation(errorMessage, validForm).validationForm(registration);
 
         return (
             <div className={styles.registerContainer}>
@@ -121,7 +114,7 @@ export class Form extends Component<IRegisterProps, IRegisterState> {
                     <Button className={styles.formButton}
                             type="submit"
                             label={registration ? 'Sign in' : 'Login'}
-                            disabled={!validForm.validationForm}/>
+                            disabled={!activeButton}/>
                 </form>
                 {
                     !success &&
