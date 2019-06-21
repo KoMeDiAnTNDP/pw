@@ -3,7 +3,8 @@
     width: 100%;
 }
 
-.content
+.home .content
 {
     padding: 81px 17px 24px 17px;
+    margin: 0;
 }
