@@ -1,8 +1,14 @@
-export interface IUser {
+export interface IUserInfo {
+    id: string;
+    name: string;
+    email: string;
+    balance: string;
+}
+
+export interface IUserRegistration {
     username: string;
     email: string;
     password: string;
-    balance: string;
     token: string;
 }
 

@@ -5,12 +5,12 @@ import cn from 'classnames';
 import styles from './authorization.module.css';
 import {Form} from "../form";
 import logo from '../../pic/parrot.svg'
-import {IUser} from "../../types";
+import {IUserRegistration} from "../../types";
 
 interface IAuthorizationProps {
     visible: boolean;
     onClose(): void;
-    onSubmit(user: IUser): void
+    onSubmit(user: IUserRegistration): void
 }
 
 interface IAuthorizationState {
@@ -34,7 +34,7 @@ export class Authorization extends Component<IAuthorizationProps, IAuthorization
         this.props.onClose();
     };
 
-    handleSubmit = (user: IUser) => {
+    handleSubmit = (user: IUserRegistration) => {
         this.props.onClose();
         this.props.onSubmit(user);
     };

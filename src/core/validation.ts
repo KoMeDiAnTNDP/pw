@@ -33,4 +33,12 @@ export class Validation {
 
         return {fieldValidationMessage, validationForm};
     }
+
+    validationForm(registration: boolean) {
+        const validForm = {...this.validForm};
+
+        return validForm.validationForm = registration ?
+            validForm.validUsername && validForm.validEmail && validForm.validPassword :
+            validForm.validEmail && validForm.validPassword;
+    }
 }

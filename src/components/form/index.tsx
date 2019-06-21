@@ -1,7 +1,7 @@
 import React, {Component, FormEvent} from 'react';
 
 import styles from './form.module.css';
-import {IErrorMessage, IUser, IValidForm} from "../../types";
+import {IErrorMessage, IUserRegistration, IValidForm} from "../../types";
 import {API} from "../../core/api";
 import {Button} from "primereact/button";
 import {FormError} from "../formErrors";
@@ -10,11 +10,11 @@ import {Validation} from "../../core/validation";
 
 interface IRegisterProps {
     registration: boolean;
-    onSubmit(user: IUser): void;
+    onSubmit(user: IUserRegistration): void;
 }
 
 interface IRegisterState {
-    user: IUser;
+    user: IUserRegistration;
     validForm: IValidForm;
     errorMessage: IErrorMessage;
     success: boolean;
@@ -27,7 +27,6 @@ export class Form extends Component<IRegisterProps, IRegisterState> {
             username: '',
             email: '',
             password: '',
-            balance: '',
             token: ''
         },
         validForm: {
@@ -47,22 +46,20 @@ export class Form extends Component<IRegisterProps, IRegisterState> {
 
     validationFormFields(fieldName: string, value: string) {
         const {errorMessage, validForm} = this.state;
-        const {fieldValidationMessage, validationForm} = new Validation(errorMessage, validForm)
-            .validationFields(fieldName, value);
+        const validation = new Validation(errorMessage, validForm);
+        const {fieldValidationMessage, validationForm} = validation.validationFields(fieldName, value);
 
 
         this.setState({
             errorMessage: fieldValidationMessage,
             validForm: validationForm
-        }, this.validateForm);
+        }, () => this.validateForm(validation));
     }
 
-    validateForm() {
+    validateForm(validation: Validation) {
         const validForm = {...this.state.validForm};
 
-        validForm.validationForm = this.props.registration ?
-            validForm.validUsername && validForm.validEmail && validForm.validPassword :
-            validForm.validEmail && validForm.validPassword;
+        validForm.validationForm = validation.validationForm(this.props.registration);
 
         this.setState({validForm: validForm})
     }

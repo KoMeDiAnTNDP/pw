@@ -2,11 +2,13 @@ import React, {Component} from 'react';
 
 import styles from './home.module.css';
 import {HeadBar} from "../head";
-import {IUser} from "../../types";
+import {IUserInfo, IUserRegistration} from "../../types";
 import {Authorization} from "../authorization";
+import {API} from "../../core/api";
+import {object} from "prop-types";
 
 interface IHomeState {
-    user: IUser;
+    user: IUserInfo;
     isAuthorized: boolean;
     openAuthorization: boolean;
 }
@@ -15,11 +17,10 @@ export class Home extends Component{
     state: IHomeState = {
         isAuthorized: false,
         user: {
-            username: '',
+            id: '',
+            name: '',
             balance: '',
-            password: '',
-            email: '',
-            token: ''
+            email: ''
         },
         openAuthorization: false
     };
@@ -35,16 +36,24 @@ export class Home extends Component{
     handleLogOut = () => {
         this.setState({
             isAuthorized: false,
-            token: ''
+            user: {}
         })
     };
 
-    handleSubmit = (user: IUser) => {
-        this.setState({user: user, isAuthorized: true})
+    handleSubmit = (user: IUserRegistration) => {
+        const api = new API();
+        api.getInfo(user.token).then(userInfo => {
+            if (typeof userInfo === 'object') {
+                const user =  {...userInfo.user_info_token};
+
+                this.setState({user: user, isAuthorized: true})
+            }
+        });
     };
 
     render() {
         const {user, isAuthorized, openAuthorization} = this.state;
+        console.log(user);
 
         return (
             <div className={styles.home}>

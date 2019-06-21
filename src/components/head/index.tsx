@@ -4,13 +4,13 @@ import {Menu} from 'primereact/menu'
 import {MenuItem} from "primereact/api";
 
 import styles from './head.module.css';
-import {IUser} from "../../types";
+import {IUserInfo} from "../../types";
 
 interface IHeadProps {
     wantLogin(): void
     wantLogOut(): void
     isAuthorized: boolean;
-    user: IUser;
+    user: IUserInfo;
 }
 
 interface IHeadState {
@@ -60,7 +60,7 @@ export class HeadBar extends Component<IHeadProps, IHeadState> {
                                 isAuthorized ?
                                     <div className={styles.profileData}>
                                         <span className={styles.profileName}>
-                                            {user.username}
+                                            {user.name}
                                         </span>
                                     </div> : <span className={styles.profileUnauth}>Log in?</span>
                             }

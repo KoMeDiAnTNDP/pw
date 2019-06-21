@@ -8,7 +8,7 @@ export class API {
     getData(
         url: string,
         method: string,
-        body: object,
+        body: object | null,
         headers: Headers
     ) {
         const api = `${this.BaseURL}${url}`;
@@ -30,5 +30,17 @@ export class API {
         const headers = new Headers({'Content-Type': 'application/json'});
 
         return this.getData(url, 'POST', body, headers).then(API.handleErrors)
+    }
+
+    getInfo(token: string) {
+        const url = 'api/protected/user-info';
+        const headers = new Headers(
+            {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+            }
+        );
+
+        return this.getData(url, 'GET', null, headers).then(API.handleErrors);
     }
 }
