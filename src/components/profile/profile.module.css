@@ -1,0 +1,42 @@
+.profileContainer
+{
+    margin: 0 auto;
+    animation: show .5s ease;
+}
+
+.profile
+{
+    border: 0 none;
+    padding: 0;
+    background-color: #fff;
+    border-radius: 3px;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .12), 0 0 2px 0 rgba(0, 0, 0, .14);
+}
+
+.titleBar
+{
+    background-color: #018786;
+    color: #fff;
+    border: 1px solid #018786;
+    padding: .714em 1em;
+    border-radius: 2px 2px 0 0;
+}
+
+.profileData
+{
+    height: 100%;
+    padding: .857em 1em;
+    line-height: 1.5;
+}
+
+@keyframes show {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
