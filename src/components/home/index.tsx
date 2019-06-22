@@ -22,7 +22,8 @@ export class Home extends Component{
             id: '',
             name: '',
             balance: '',
-            email: ''
+            email: '',
+            token: ''
         },
         openAuthorization: false
     };
@@ -46,9 +47,11 @@ export class Home extends Component{
         const api = new API();
         api.getInfo(user.token).then(userInfo => {
             if (typeof userInfo === 'object') {
-                const user =  {...userInfo.user_info_token};
+                const token = user.token;
+                const regUser =  {...userInfo.user_info_token, token};
 
-                this.setState({user: user, isAuthorized: true})
+
+                this.setState({user: regUser, isAuthorized: true})
             }
         });
     };
@@ -66,7 +69,7 @@ export class Home extends Component{
                                onClose={this.handleCloseAuthorizationForm}
                                visible={openAuthorization}/>
                 <div className={cn(styles.content, 'p-grid')}>
-                    <Profile user={user} visible={isAuthorized} classname='p-col-12 p-md-6 p-lg-3'/>
+                    {isAuthorized && <Profile user={user} classname='p-col-12 p-md-6 p-lg-3'/>}
                 </div>
             </div>
         )

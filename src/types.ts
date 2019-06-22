@@ -3,6 +3,7 @@ export interface IUserInfo {
     name: string;
     email: string;
     balance: string;
+    token: string;
 }
 
 export interface IUserRegistration {

@@ -24,9 +24,31 @@
 
 .profileData
 {
+    position: relative;
     height: 100%;
     padding: .857em 1em;
     line-height: 1.5;
+}
+
+.profileData .profileRefresh
+{
+    position: absolute;
+    top: -17px;
+    right: 5px;
+    background-color: #f44336;
+    border: 1px solid #f44336;
+    border-radius: 50%;
+}
+
+.profileData .profileRefresh:enabled:hover
+{
+    background-color: #e57373;
+    border-color: #e57373;
+}
+
+.profileData .profileRefresh:enabled:focus
+{
+    box-shadow: none;
 }
 
 @keyframes show {

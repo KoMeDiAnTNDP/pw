@@ -1,9 +1,10 @@
 import React, {Component, FormEvent} from 'react';
 
+import {Button} from "primereact/button";
+
 import styles from './form.module.css';
 import {IErrorMessage, IUserRegistration, IValidForm} from "../../types";
 import {API} from "../../core/api";
-import {Button} from "primereact/button";
 import {FormError} from "../formErrors";
 import {Field} from "../field";
 import {Validation} from "../../core/validation";
