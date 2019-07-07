@@ -9,9 +9,9 @@ export class Validation {
         this.validForm = {...validForm};
     }
 
-    validationAuthFields(fieldName: string, value: string) {
-        let fieldValidationMessage = {...this.errorMessage};
-        let validationForm = {...this.validForm};
+    validationAuthFields(fieldName: string, value: string, registration: boolean) {
+        let fieldValidationMessage = this.errorMessage;
+        let validationForm = this.validForm;
 
         switch (fieldName) {
             case 'username':
@@ -32,12 +32,14 @@ export class Validation {
                 break
         }
 
+        validationForm.validationForm = this.validationAuthForm(registration);
+
         return {fieldValidationMessage, validationForm};
     }
 
     validationTransactionField(fieldName: string, value: string, user: IUserInfo) {
-        let fieldValidationMessage = {...this.errorMessage};
-        let validationForm = {...this.validForm};
+        let fieldValidationMessage = this.errorMessage;
+        let validationForm = this.validForm;
 
         switch (fieldName) {
             case 'name':
@@ -54,19 +56,19 @@ export class Validation {
                 break;
         }
 
+        validationForm.validationForm = this.validationTransactionForm();
+
         return {fieldValidationMessage, validationForm};
     }
 
     validationAuthForm(registration: boolean) {
         const validForm = {...this.validForm};
+        validForm.validUsername = registration ? validForm.validUsername : true;
 
-        return validForm.validationForm = registration ?
-            validForm.validUsername && validForm.validEmail && validForm.validPassword :
-            validForm.validEmail && validForm.validPassword;
+        return validForm.validUsername && validForm.validEmail && validForm.validPassword
     }
 
     validationTransactionForm() {
-
         return this.validForm.validUsername && this.validForm.validBalance;
     }
 }
