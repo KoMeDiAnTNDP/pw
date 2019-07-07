@@ -8,14 +8,23 @@ import {IUserInfo, IUserRegistration} from "../../types";
 import {Authorization} from "../authorization";
 import {API} from "../../core/api";
 import {Profile} from "../profile";
+import {Message} from "../message";
+import {Transactions} from "../transactions";
+
+interface IHomeProps {
+    onChange(): void;
+}
 
 interface IHomeState {
     user: IUserInfo;
     isAuthorized: boolean;
     openAuthorization: boolean;
+    openMessage: boolean;
+    animation: boolean;
+    refresh: boolean;
 }
 
-export class Home extends Component{
+export class Home extends Component<IHomeProps, IHomeState>{
     state: IHomeState = {
         isAuthorized: false,
         user: {
@@ -25,7 +34,10 @@ export class Home extends Component{
             email: '',
             token: ''
         },
-        openAuthorization: false
+        openAuthorization: false,
+        openMessage: true,
+        animation: false,
+        refresh: false
     };
 
     handleOpenAuthorizationForm = () => {
@@ -36,28 +48,59 @@ export class Home extends Component{
         this.setState({openAuthorization: false})
     };
 
+    handleCloseMessage = () => {
+        this.setState({
+            animation: true
+            }, () =>
+            setTimeout(() => {
+                this.setState({
+                    openMessage: false,
+                    animation: false
+                })
+            }, 500)
+        )
+    };
+
     handleLogOut = () => {
+        const unauthUser: IUserInfo = {
+            id: '',
+            name: '',
+            email: '',
+            balance: '',
+            token: ''
+        } ;
+
+        this.props.onChange();
         this.setState({
             isAuthorized: false,
-            user: {}
+            user: unauthUser
         })
     };
 
-    handleSubmit = (user: IUserRegistration) => {
+    handleAuthorizationSubmit = (user: IUserRegistration) => {
         const api = new API();
         api.getInfo(user.token).then(userInfo => {
             if (typeof userInfo === 'object') {
                 const token = user.token;
                 const regUser =  {...userInfo.user_info_token, token};
 
-
-                this.setState({user: regUser, isAuthorized: true})
+                this.props.onChange();
+                this.setState({
+                    user: regUser,
+                    isAuthorized: true,
+                }, this.handleCloseMessage)
             }
         });
     };
 
+    handleTransactionSubmit = () => {
+        this.setState({
+            refresh: true,
+        });
+    };
+
     render() {
-        const {user, isAuthorized, openAuthorization} = this.state;
+        const {user, isAuthorized, openAuthorization, openMessage, animation, refresh} = this.state;
 
         return (
             <div className={styles.home}>
@@ -65,12 +108,16 @@ export class Home extends Component{
                          wantLogOut={this.handleLogOut}
                          isAuthorized={isAuthorized}
                          user={user}/>
-                <Authorization onSubmit={this.handleSubmit}
+                <Authorization onSubmit={this.handleAuthorizationSubmit}
                                onClose={this.handleCloseAuthorizationForm}
                                visible={openAuthorization}/>
                 <div className={cn(styles.content, 'p-grid')}>
-                    {isAuthorized && <Profile user={user} classname='p-col-12 p-md-6 p-lg-3'/>}
+                    {isAuthorized && <Profile user={user} refresh={refresh}/>}
+                    {isAuthorized && <Transactions user={user} refresh={refresh} onSubmit={this.handleTransactionSubmit}/>}
                 </div>
+                <Message onClose={this.handleCloseMessage}
+                         visible={openMessage}
+                         animation={animation}/>
             </div>
         )
     }

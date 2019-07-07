@@ -2,7 +2,7 @@ import React, {Component, FormEvent} from 'react';
 
 import {Button} from "primereact/button";
 
-import styles from './form.module.css';
+import styles from './authForm.module.css';
 import {IErrorMessage, IUserRegistration, IValidForm} from "../../types";
 import {API} from "../../core/api";
 import {FormError} from "../formErrors";
@@ -22,7 +22,7 @@ interface IRegisterState {
     failMessage: string;
 }
 
-export class Form extends Component<IRegisterProps, IRegisterState> {
+export class AuthorizationForm extends Component<IRegisterProps, IRegisterState> {
     state: IRegisterState = {
         user: {
             username: '',
@@ -34,12 +34,14 @@ export class Form extends Component<IRegisterProps, IRegisterState> {
             validUsername: false,
             validEmail: false,
             validPassword: false,
+            validBalance: false,
             validationForm: false
         },
         errorMessage: {
             username: '',
             email: '',
-            password: ''
+            password: '',
+            balance: ''
         },
         success: false,
         failMessage: ''
@@ -48,7 +50,7 @@ export class Form extends Component<IRegisterProps, IRegisterState> {
     validationFormFields(fieldName: string, value: string) {
         const {errorMessage, validForm} = this.state;
         const validation = new Validation(errorMessage, validForm);
-        const {fieldValidationMessage, validationForm} = validation.validationFields(fieldName, value);
+        const {fieldValidationMessage, validationForm} = validation.validationAuthFields(fieldName, value);
 
 
         this.setState({
@@ -90,7 +92,7 @@ export class Form extends Component<IRegisterProps, IRegisterState> {
     render() {
         const {validForm, errorMessage, success, failMessage} = this.state;
         const {registration} = this.props;
-        const activeButton = new Validation(errorMessage, validForm).validationForm(registration);
+        const activeButton = new Validation(errorMessage, validForm).validationAuthForm(registration);
 
         return (
             <div className={styles.registerContainer}>

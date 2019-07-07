@@ -2,9 +2,10 @@
 {
     margin: 0 auto;
     animation: show .5s ease;
+    position: relative;
 }
 
-.profile
+.profileContainer .profile
 {
     border: 0 none;
     padding: 0;
@@ -13,40 +14,24 @@
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .12), 0 0 2px 0 rgba(0, 0, 0, .14);
 }
 
-.titleBar
-{
-    background-color: #018786;
-    color: #fff;
-    border: 1px solid #018786;
-    padding: .714em 1em;
-    border-radius: 2px 2px 0 0;
-}
-
-.profileData
-{
-    position: relative;
-    height: 100%;
-    padding: .857em 1em;
-    line-height: 1.5;
-}
-
-.profileData .profileRefresh
+.profileContainer .profileRefresh
 {
     position: absolute;
-    top: -17px;
-    right: 5px;
+    top: 25px;
+    right: 11px;
     background-color: #f44336;
     border: 1px solid #f44336;
     border-radius: 50%;
+    z-index: 3;
 }
 
-.profileData .profileRefresh:enabled:hover
+.profileContainer .profileRefresh:enabled:hover
 {
     background-color: #e57373;
     border-color: #e57373;
 }
 
-.profileData .profileRefresh:enabled:focus
+.profile .profileRefresh:enabled:focus
 {
     box-shadow: none;
 }

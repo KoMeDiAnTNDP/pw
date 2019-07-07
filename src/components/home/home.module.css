@@ -1,10 +1,14 @@
 .home
 {
     width: 100%;
+    display: flex;
 }
 
-.home .content
+.content
 {
+    width: 100%;
     padding: 81px 17px 24px 17px;
     margin: 0;
+    justify-content: space-around;
+    align-content: space-around;
 }

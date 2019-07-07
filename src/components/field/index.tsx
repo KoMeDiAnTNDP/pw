@@ -25,11 +25,25 @@ export class Field extends Component<IFieldProps, IFieldState> {
         return `${id.charAt(0).toUpperCase()}${id.slice(1)}`
     };
 
-    handleChange = (event: FormEvent<HTMLInputElement>) => {
-        const value = event.currentTarget.value;
+    checkNumbers = (value: string) => {
+        if (isNaN(Number(value))) {
+            return;
+        }
 
         this.props.getValue(this.props.id, value);
         this.setState({value: value});
+    };
+
+    handleChange = (event: FormEvent<HTMLInputElement>) => {
+        const value = event.currentTarget.value;
+
+        if (this.props.id === 'amount') {
+            this.checkNumbers(value);
+        }
+        else {
+            this.props.getValue(this.props.id, value);
+            this.setState({value: value});
+        }
     };
 
     render() {
@@ -60,31 +74,3 @@ export class Field extends Component<IFieldProps, IFieldState> {
         );
     }
 }
-
-/*export const Field = (props: IFieldProps) => {
-    const fieldClassName =  cn('p-float-label', styles.registrationFields);
-    const inputField = props.valid ? styles.inputField : cn(styles.inputField__error, styles.inputField);
-
-    return (
-        <span className={fieldClassName}>
-            {
-                props.id === 'password' ?
-                    <Password id={props.id}
-                              value={props.value}
-                              getValue={props.getValue}
-                              className={inputField}
-                              feedback={false}
-                              required/> :
-                    <InputText id={props.id}
-                               type={props.id === 'email' ? 'email' : 'text'}
-                               value={props.value}
-                               getValue={props.getValue}
-                               className={inputField}
-                               required/>
-                }
-                <label htmlFor={props.id}>{props.text}</label>
-            </span>
-    )
-};*/
-
-

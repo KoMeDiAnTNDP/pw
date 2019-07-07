@@ -6,10 +6,11 @@ import styles from './profile.module.css';
 import {IUserInfo} from "../../types";
 import {Button} from "primereact/button";
 import {API} from "../../core/api";
+import {Panel} from "primereact/panel";
 
 interface IProfileProps {
     user: IUserInfo;
-    classname: string
+    refresh: boolean;
 }
 
 interface IProfileState {
@@ -24,6 +25,12 @@ export  class Profile extends Component<IProfileProps, IProfileState> {
         };
     }
 
+    componentDidUpdate(prevProps: Readonly<IProfileProps>): void {
+        if (this.props.refresh !== prevProps.refresh) {
+            this.handleRefresh()
+        }
+    }
+
     handleRefresh = () => {
         const api = new API();
 
@@ -31,30 +38,24 @@ export  class Profile extends Component<IProfileProps, IProfileState> {
             .then(info => {
                 const token = this.state.refreshUser.token;
                 const refreshUser = {...info.user_info_token, token};
-                console.log(refreshUser)
                 this.setState({refreshUser: refreshUser})
             })
     };
 
     render() {
         const {refreshUser} = this.state;
-        const {classname} = this.props;
 
         return (
-            <div className={cn(styles.profileContainer, classname)}>
-                <div className={styles.profile}>
-                    <div className={styles.titleBar}>
-                        <span className={styles.title}>Profile</span>
-                    </div>
-                    <div className={styles.profileData}>
-                        <Button className={styles.profileRefresh}
-                                icon='pi pi-refresh'
-                                onClick={this.handleRefresh}/>
-                        <p>Name: {refreshUser.name}</p>
-                        <p>Email: {refreshUser.email}</p>
-                        <p>Balance: {refreshUser.balance}</p>
-                    </div>
-                </div>
+            <div className={cn(styles.profileContainer, 'p-col-12 p-md-6 p-lg-4')}>
+                <Button className={styles.profileRefresh}
+                        icon='pi pi-fw pi-refresh'
+                        onClick={this.handleRefresh}
+                        title='Refresh your data'/>
+                <Panel header='Profile' className={styles.profile}>
+                    <p>Name: {refreshUser.name}</p>
+                    <p>Email: {refreshUser.email}</p>
+                    <p>Balance: {refreshUser.balance}PW</p>
+                </Panel>
             </div>
         );
     }

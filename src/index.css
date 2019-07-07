@@ -1,31 +1,62 @@
 html
 {
-  height: 100%;
+    height: 100%;
 }
 
 body {
-  margin: 0;
-  padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  height: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    height: 100%;
+    font-size: 14px;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
 
 *
 {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 .root
 {
-  width: 100%;
-  height: 100%;
+    width: 100%;
+    height: 100%;
+}
+
+.p-panel.p-component .p-panel-titlebar
+{
+    background-color: #018786;
+    color: #fff;
+    border: 0 none;
+}
+
+.p-panel.p-component .p-toggleable-content .p-panel-content
+{
+    position: relative;
+    border: 0 none;
+}
+
+.pi.pi-refresh,
+.pi.pi-plus
+{
+    display: flex;
+}
+
+.pi.pi-refresh:before,
+.pi.pi-plus:before
+{
+    margin: auto;
+}
+
+body .p-inputtext.p-component.p-autocomplete-input
+{
+    width: 100%;
 }

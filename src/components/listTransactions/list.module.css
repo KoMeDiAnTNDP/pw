@@ -1,0 +1,28 @@
+.listTransactionsWrapper
+{
+    width: 100%;
+    height: 150px;
+    margin-top: 10px;
+    overflow-y: scroll;
+}
+
+.listTransactionsWrapper::-webkit-scrollbar
+{
+    display: none;
+}
+
+.listTransactions
+{
+    width: 100%;
+}
+
+.transaction:first-child
+{
+    margin-top: 0;
+}
+
+.refill
+{
+    composes: transaction;
+    color: #43a047;
+}

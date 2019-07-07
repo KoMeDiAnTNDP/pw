@@ -1,0 +1,26 @@
+.filter
+{
+    opacity: .5;
+    margin-right: 10px;
+}
+
+.filter:last-child
+{
+    margin: 0;
+}
+
+.filter_checked
+{
+    composes: filter;
+    opacity: 1;
+}
+
+.filter .filter__checkbox
+{
+    display: none;
+}
+
+.filter__text
+{
+    cursor: pointer;
+}

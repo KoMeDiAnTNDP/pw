@@ -3,8 +3,8 @@ import React, {Component} from 'react';
 import cn from 'classnames';
 
 import styles from './authorization.module.css';
-import {Form} from "../form";
-import logo from '../../pic/parrot.svg'
+import {AuthorizationForm} from "../authForm";
+import logo from '../../pic/parrot-logo.svg'
 import {IUserRegistration} from "../../types";
 
 interface IAuthorizationProps {
@@ -48,7 +48,7 @@ export class Authorization extends Component<IAuthorizationProps, IAuthorization
         }
 
         return (
-            <div className={styles.wrapper}>
+            <div className={styles.authorizationWrapper}>
                 <div className={styles.loginOrRegister}>
                     <div className={styles.authHead}>
                         <img className={styles.logo} src={logo} alt="logo"/>
@@ -59,7 +59,7 @@ export class Authorization extends Component<IAuthorizationProps, IAuthorization
                                 onClick={this.handleRegistrationChange}
                                 className={registration ? cn(styles.showRegisterForm, styles.active) : styles.showRegisterForm}
                             >
-                                Register
+                                Sign in
                             </span>
                             <span className={styles.showFormsDivider}>/</span>
                             <span
@@ -70,7 +70,7 @@ export class Authorization extends Component<IAuthorizationProps, IAuthorization
                             </span>
                             <span className={styles.exit} onClick={this.handleClose}/>
                         </div>
-                        <Form registration={registration} onSubmit={this.handleSubmit}/>
+                        <AuthorizationForm registration={registration} onSubmit={this.handleSubmit}/>
                     </div>
                 </div>
             </div>

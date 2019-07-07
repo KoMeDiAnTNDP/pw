@@ -18,18 +18,18 @@ export class API {
                 body: JSON.stringify(body),
                 method: method,
                 headers: headers
-            }) :
+            }).then(API.handleErrors) :
             fetch(api, {
                 method: method,
                 headers: headers
-            });
+            }).then(API.handleErrors);
     }
 
     registrationOrLogin(registration: boolean, body: object) {
         const url = registration ? 'users' : 'sessions/create';
         const headers = new Headers({'Content-Type': 'application/json'});
 
-        return this.getData(url, 'POST', body, headers).then(API.handleErrors)
+        return this.getData(url, 'POST', body, headers)
     }
 
     getInfo(token: string) {
@@ -41,6 +41,36 @@ export class API {
             }
         );
 
-        return this.getData(url, 'GET', null, headers).then(API.handleErrors);
+        return this.getData(url, 'GET', null, headers);
+    }
+
+    makeTransaction(token: string, body: object) {
+        const url = 'api/protected/transactions';
+        const headers = new Headers({
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+        });
+
+        return this.getData(url, 'POST', body, headers);
+    }
+
+    getTransactions(token: string) {
+        const url = 'api/protected/transactions';
+        const headers = new Headers({
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+        });
+
+        return this.getData(url, 'GET', null, headers);
+    }
+
+    getUserList(token: string, filter: string) {
+        const url = 'api/protected/users/list';
+        const headers = new Headers({
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+        });
+
+        return this.getData(url, 'POST', {filter: filter}, headers);
     }
 }

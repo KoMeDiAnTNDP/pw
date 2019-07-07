@@ -1,0 +1,99 @@
+.messageContainer
+{
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 20em;
+    max-height: 500px;
+    background-color: #ffe399;
+    color: #212121;
+    border: 0 none;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, .16);
+    z-index: 1;
+    opacity: .9;
+    overflow: hidden;
+    animation: show 250ms ease-in;
+    transition: max-height .5s cubic-bezier(0, 1, 0, 1);
+}
+
+body .messageContainerClose
+{
+    max-height: 0;
+}
+
+.messageItem
+{
+    padding: 1em;
+    position: relative;
+}
+
+.messageItem .buttonClose,
+.messageItem .buttonClose:enabled:hover
+{
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    cursor: pointer;
+    color: #212121;
+    background-color: #ffe399;
+    border: 0 none;
+}
+
+.messageItem .buttonClose:enabled:focus
+{
+    box-shadow: none;
+}
+
+.message
+{
+    flex-direction: column;
+    padding: 0 0 .25em;
+}
+
+.messageTittle
+{
+    font-weight: 700;
+    padding: 0 0 .5em;
+    display: block;
+}
+
+.messageContent
+{
+    display: flex;
+}
+
+.messageText
+{
+    margin: auto 0;
+    line-height: 1.5;
+}
+
+.messageParrot
+{
+    width: 40px;
+    height: 40px;
+    margin-left: 10px;
+}
+
+@keyframes show {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@media screen and (max-width: 730px){
+    .messageContainer
+    {
+        width: 15em;
+    }
+
+    .messageParrot
+    {
+        width: 35px;
+        height: 35px;
+    }
+}
