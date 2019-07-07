@@ -46,7 +46,6 @@ export class ListTransactions extends Component<IListProps, IListState> {
     fetchTransaction = () => {
         const api = new API();
         const token = this.props.user.token;
-        console.log(token);
 
         api.getTransactions(token)
             .then(data => {

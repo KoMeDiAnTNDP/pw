@@ -14,7 +14,6 @@ interface IHeadProps {
 }
 
 interface IHeadState {
-    profile: MenuItem;
     unregistered: MenuItem;
     registered: MenuItem;
 }
@@ -23,10 +22,6 @@ export class HeadBar extends Component<IHeadProps, IHeadState> {
     menu: any;
 
     state: IHeadState = {
-        profile: {
-            label: 'Profile',
-            icon: 'pi pi-fw pi-user'
-        },
         registered: {
             label: 'Log out',
             icon: 'pi pi-fw pi-sign-out',
@@ -44,9 +39,9 @@ export class HeadBar extends Component<IHeadProps, IHeadState> {
     };
 
     render() {
-        const {profile, registered, unregistered} = this.state;
+        const {registered, unregistered} = this.state;
         const {isAuthorized, user} = this.props;
-        const items: MenuItem[] = isAuthorized ? [profile, registered] : [unregistered];
+        const items: MenuItem[] = isAuthorized ? [registered] : [unregistered];
 
         return (
             <div className={styles.head}>

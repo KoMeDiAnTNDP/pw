@@ -18,8 +18,7 @@ interface IRegisterState {
     user: IUserRegistration;
     validForm: IValidForm;
     errorMessage: IErrorMessage;
-    success: boolean;
-    failMessage: string;
+    errorServer: string;
 }
 
 export class AuthorizationForm extends Component<IRegisterProps, IRegisterState> {
@@ -34,24 +33,20 @@ export class AuthorizationForm extends Component<IRegisterProps, IRegisterState>
             validUsername: false,
             validEmail: false,
             validPassword: false,
-            validBalance: false,
             validationForm: false
         },
         errorMessage: {
             username: '',
             email: '',
-            password: '',
-            balance: ''
+            password: ''
         },
-        success: false,
-        failMessage: ''
+        errorServer: ''
     };
 
     validationFormFields(fieldName: string, value: string) {
         const {errorMessage, validForm} = this.state;
         const validation = new Validation(errorMessage, validForm);
-        const {fieldValidationMessage, validationForm} = validation.validationAuthFields(fieldName, value);
-
+        const {fieldValidationMessage, validationForm} = validation.validationAuthFields(fieldName, value, this.props.registration);
 
         this.setState({
             errorMessage: fieldValidationMessage,
@@ -65,7 +60,7 @@ export class AuthorizationForm extends Component<IRegisterProps, IRegisterState>
         if (id === 'username' || id === 'email' || id === 'password') {
             user[id] = value;
 
-            this.setState({user: user}, () => this.validationFormFields(id, value));
+            this.setState({user: user}, () => {this.validationFormFields(id, value)});
         }
     };
 
@@ -79,20 +74,18 @@ export class AuthorizationForm extends Component<IRegisterProps, IRegisterState>
                     const user = {...this.state.user};
                     user.token = data.id_token;
 
-                    this.setState({user: user, success: true});
+                    this.setState({user: user});
                     this.props.onSubmit(user);
                 }
                 else {
-
-                    this.setState({failMessage: data, success: false})
+                    this.setState({errorServer: data})
                 }
             });
     };
 
     render() {
-        const {validForm, errorMessage, success, failMessage} = this.state;
+        const {validForm, errorMessage, errorServer} = this.state;
         const {registration} = this.props;
-        const activeButton = new Validation(errorMessage, validForm).validationAuthForm(registration);
 
         return (
             <div className={styles.registerContainer}>
@@ -117,13 +110,13 @@ export class AuthorizationForm extends Component<IRegisterProps, IRegisterState>
                     <Button className={styles.formButton}
                             type="submit"
                             label={registration ? 'Sign in' : 'Login'}
-                            disabled={!activeButton}/>
+                            disabled={!validForm.validationForm}/>
                 </form>
                 {
-                    !success &&
+                    errorServer &&
                     <div className={styles.serverError}>
                         <span className={styles.errorMessage}>
-                            {failMessage}
+                            {errorServer}
                         </span>
                     </div>
                 }

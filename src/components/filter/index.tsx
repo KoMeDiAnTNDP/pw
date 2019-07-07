@@ -1,11 +1,7 @@
 import React, {Component} from 'react';
 
-import cn from 'classnames';
-import {RadioButton} from "primereact/radiobutton";
-
 import styles from './filter.module.css';
 import {Checkbox} from "primereact/checkbox";
-import {checkPropTypes} from "prop-types";
 
 interface IFilterProps {
     name: string;

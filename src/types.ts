@@ -14,18 +14,18 @@ export interface IUserRegistration {
 }
 
 export interface IValidForm {
-    validUsername: boolean;
-    validEmail: boolean;
-    validPassword: boolean;
-    validBalance: boolean;
-    validationForm: boolean
+    validUsername?: boolean;
+    validEmail?: boolean;
+    validPassword?: boolean;
+    validBalance?: boolean;
+    validationForm?: boolean
 }
 
 export interface IErrorMessage {
-    username: string;
-    email: string;
-    password: string;
-    balance: string;
+    username?: string;
+    email?: string;
+    password?: string;
+    balance?: string;
 }
 
 export interface ITransaction {

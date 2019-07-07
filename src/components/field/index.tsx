@@ -1,10 +1,9 @@
 import React, {Component, FormEvent} from 'react';
 
 import cn from "classnames";
+import {InputText} from "primereact/inputtext";
 
 import styles from "./field.module.css";
-import {Password} from "primereact/password";
-import {InputText} from "primereact/inputtext";
 
 interface IFieldProps {
     id: string;
@@ -54,21 +53,12 @@ export class Field extends Component<IFieldProps, IFieldState> {
 
         return (
             <span className={fieldClassName}>
-            {
-                id === 'password' ?
-                    <Password id={id}
-                              value={value}
-                              onChange={this.handleChange}
-                              className={inputField}
-                              feedback={false}
-                              required/> :
-                    <InputText id={id}
-                               type={id === 'email' ? 'email' : 'text'}
-                               value={value}
-                               onChange={this.handleChange}
-                               className={inputField}
-                               required/>
-            }
+                <InputText id={id}
+                           type={id}
+                           value={value}
+                           onChange={this.handleChange}
+                           className={inputField}
+                           required/>
                 <label htmlFor={id}>{this.makeText(id)}</label>
             </span>
         );

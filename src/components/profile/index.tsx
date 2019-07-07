@@ -27,7 +27,7 @@ export  class Profile extends Component<IProfileProps, IProfileState> {
 
     componentDidUpdate(prevProps: Readonly<IProfileProps>): void {
         if (this.props.refresh !== prevProps.refresh) {
-            this.handleRefresh()
+            this.handleRefresh();
         }
     }
 

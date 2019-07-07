@@ -1,7 +1,5 @@
 import React, {Component, FormEvent} from 'react';
 
-import cn from 'classnames';
-import {AutoComplete} from "primereact/autocomplete";
 import {Button} from "primereact/button";
 
 import {IErrorMessage, IUserInfo, IValidForm} from "../../types";
@@ -10,7 +8,7 @@ import {Field} from "../field";
 import {Validation} from "../../core/validation";
 import {FormError} from "../formErrors";
 import {API} from "../../core/api";
-import {debounce} from "../../core/debounce";
+import {Names} from "../names";
 
 interface ITransactionFormProps {
     user: IUserInfo;
@@ -18,14 +16,12 @@ interface ITransactionFormProps {
 }
 
 interface ITransactionFormState {
+    recipient: string;
+    amount: string;
     user: IUserInfo;
     validFrom: IValidForm;
     errorMessage: IErrorMessage;
-    recipient: string;
-    amount: string;
-    suggestions: string[];
-    success: boolean;
-    failedMessage: string;
+    errorServer: string;
 }
 
 export class TransactionForm extends Component<ITransactionFormProps, ITransactionFormState> {
@@ -36,22 +32,15 @@ export class TransactionForm extends Component<ITransactionFormProps, ITransacti
             user: props.user,
             errorMessage: {
                 username: '',
-                email: '',
-                password: '',
                 balance: ''
             },
             validFrom: {
                 validUsername: false,
-                validEmail: false,
-                validPassword: false,
-                validBalance: false,
-                validationForm: false
+                validBalance: false
             },
             recipient: '',
             amount: '',
-            suggestions: [],
-            success: true,
-            failedMessage: ''
+            errorServer: ''
         }
     }
 
@@ -71,27 +60,14 @@ export class TransactionForm extends Component<ITransactionFormProps, ITransacti
             () => this.validationFieldForms(id, value))
     };
 
-    handleNameChange = (event: {originalEvent: Event , value: any}) => {
-        this.setState({recipient: event.value},
-            () => this.validationFieldForms('name', event.value));
+    getName = (recipient: string) => {
+        this.setState({recipient: recipient},
+            () => this.validationFieldForms('name', recipient))
     };
 
-    fetchNames = () => {
-        const api = new API();
-        const token = this.state.user.token;
-        const value = this.state.recipient;
-
-        api.getUserList(token, value)
-            .then((data: [{id: number, name: string}]) => {
-                if (typeof data === 'object') {
-                    const names = Object.values(data).map(name => name.name);
-                    console.log(names);
-                    this.setState({suggestions: names})
-                }
-            })
+    getError = (errorMessage: string) => {
+        this.setState({errorServer: errorMessage})
     };
-
-    getName = debounce(this.fetchNames, 10000);
 
     handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -105,23 +81,17 @@ export class TransactionForm extends Component<ITransactionFormProps, ITransacti
         api.makeTransaction(user.token, body)
             .then(data => {
                 if (typeof data === 'object') {
-                    this.setState({success: true});
                     this.props.onSubmit();
                 }
                 else {
-                    this.setState({
-                        success: false,
-                        failedMessage: data
-                    })
+                    this.setState({errorServer: data})
                 }
             })
     };
 
     render() {
-        const {recipient, errorMessage, validFrom, suggestions, success, failedMessage} = this.state;
-        const activeButton = new Validation(errorMessage, validFrom).validationTransactionForm();
-        const inputClassName = !errorMessage.username ? styles.inputField : cn(styles.inputField, styles.inputField__error);
-        console.log(this.props.user.token);
+        const {errorMessage, validFrom, errorServer} = this.state;
+        const {user} = this.props;
 
         return (
             <div className={styles.transactionFromContainer}>
@@ -130,26 +100,18 @@ export class TransactionForm extends Component<ITransactionFormProps, ITransacti
                     {errorMessage.balance && <FormError name="balance" text={errorMessage.balance} transaction={true}/>}
                 </div>
                 <form className={styles.transactionForm} method="POST" onSubmit={this.handleSubmit}>
-                    <span className={cn(styles.transactionFields,'p-float-label')}>
-                        <AutoComplete value={recipient}
-                                      className={styles.inputField}
-                                      inputClassName={inputClassName}
-                                      onChange={this.handleNameChange}
-                                      suggestions={suggestions}
-                                      completeMethod={this.getName}/>
-                        <label htmlFor="name">Name</label>
-                    </span>
+                    <Names user={user} getName={this.getName} getError={this.getError}/>
                     <Field id="amount" valid={!errorMessage.balance} getValue={this.getValue}/>
                     <Button className={styles.buttonForm}
                             type="submit"
                             label="Send"
-                            disabled={!activeButton}/>
+                            disabled={!validFrom.validationForm}/>
                 </form>
                 {
-                    !success &&
+                    errorServer &&
                     <div className={styles.serverError}>
                         <span className={styles.errorMessage}>
-                            {failedMessage}
+                            {errorServer}
                         </span>
                     </div>
                 }

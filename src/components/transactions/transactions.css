@@ -1,6 +1,7 @@
 .transactionsContainers
 {
     margin: auto;
+    animation: show .5s ease;
 }
 
 .transactionsContainers .transactions
@@ -48,4 +49,16 @@
 {
     vertical-align: middle;
     margin-right: 10px;
+}
+
+@keyframes show {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

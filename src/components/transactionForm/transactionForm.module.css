@@ -11,23 +11,6 @@
     margin: 10px 0 20px 0;
 }
 
-.transactionFields
-{
-    width: 100%;
-    margin-bottom: 20px;
-}
-
-.inputField
-{
-    width: 100%;
-}
-
-.transactionFields .inputField__error
-{
-    border: 1px solid #a80000;
-    border-radius: 3px;
-}
-
 .buttonForm
 {
     width: 100%;

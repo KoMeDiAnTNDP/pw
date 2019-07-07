@@ -22,6 +22,7 @@ interface IHomeState {
     openMessage: boolean;
     animation: boolean;
     refresh: boolean;
+    intervalId: number | undefined;
 }
 
 export class Home extends Component<IHomeProps, IHomeState>{
@@ -37,8 +38,31 @@ export class Home extends Component<IHomeProps, IHomeState>{
         openAuthorization: false,
         openMessage: true,
         animation: false,
-        refresh: false
+        refresh: false,
+        intervalId: undefined
     };
+
+    clearUser: IUserInfo = {
+        id: '',
+        name: '',
+        email: '',
+        balance: '',
+        token: ''
+    };
+
+    componentDidMount() {
+        const intervalId = window.setInterval(this.refreshData, 10000);
+
+        this.setState({intervalId: intervalId})
+    }
+
+    refreshData = () => {
+        this.setState({refresh: !this.state.refresh})
+    };
+
+    componentWillUnmount() {
+        clearInterval(this.state.intervalId);
+    }
 
     handleOpenAuthorizationForm = () => {
         this.setState({openAuthorization: true});
@@ -62,18 +86,10 @@ export class Home extends Component<IHomeProps, IHomeState>{
     };
 
     handleLogOut = () => {
-        const unauthUser: IUserInfo = {
-            id: '',
-            name: '',
-            email: '',
-            balance: '',
-            token: ''
-        } ;
-
         this.props.onChange();
         this.setState({
             isAuthorized: false,
-            user: unauthUser
+            user: this.clearUser
         })
     };
 

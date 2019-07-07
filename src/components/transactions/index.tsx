@@ -46,7 +46,6 @@ export class Transactions extends Component<ITransactionsProps, ITransactionStat
     render() {
         const {openTransactionsForm, filter} = this.state;
         const {user, refresh} = this.props;
-        console.log(filter);
 
         return (
             <div className={cn('transactionsContainers', 'p-col-12 p-md-8 p-lg-6')}>
