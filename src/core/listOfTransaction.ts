@@ -30,20 +30,12 @@ export class List {
         return target;
     }
 
-    sort(filter: string): ITransaction[] {
-        switch (filter) {
-            case 'date':
-                return this.sortByDate();
-            case 'name':
-                return this.sortByName();
-            case 'amount':
-                return this.sortByAmount();
-            default:
-                return this.sortByDate().reverse();
-        }
-    }
-
-    static getAnswer(transaction: ITransaction, message: string): {transactionClassName: string, transactionMessage: string} {
+    static getAnswer(
+        transaction: ITransaction,
+        message: string): {
+        transactionClassName: string,
+        transactionMessage: string
+    } {
         let transactionClassName = '';
         let transactionMessage = '';
         const transactionAmount = transaction.amount.toString();
@@ -73,6 +65,19 @@ export class List {
 
         return {transactionClassName, transactionMessage};
     };
+
+    sort(filter: string): ITransaction[] {
+        switch (filter) {
+            case 'date':
+                return this.sortByDate();
+            case 'name':
+                return this.sortByName();
+            case 'amount':
+                return this.sortByAmount();
+            default:
+                return this.sortByDate().reverse();
+        }
+    }
 
     private static sortByYearOrTime(first: string, second: string, filter: string): number {
         const separator = filter === 'year' ? '-' : ':';

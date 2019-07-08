@@ -47,11 +47,11 @@ export  class Profile extends Component<IProfileProps, IProfileState> {
 
         return (
             <div className={cn(styles.profileContainer, 'p-col-12 p-md-6 p-lg-4')}>
-                <Button className={styles.profileRefresh}
-                        icon='pi pi-fw pi-refresh'
-                        onClick={this.handleRefresh}
-                        title='Refresh your data'/>
                 <Panel header='Profile' className={styles.profile}>
+                    <Button className={styles.profileRefresh}
+                            icon='pi pi-fw pi-refresh'
+                            onClick={this.handleRefresh}
+                            title='Refresh your data'/>
                     <p>Name: {refreshUser.name}</p>
                     <p>Email: {refreshUser.email}</p>
                     <p>Balance: {refreshUser.balance}PW</p>

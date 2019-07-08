@@ -91,15 +91,3 @@
     border-right: 8px solid transparent;
     border-bottom: 15px solid #5e35b1;
 }
-
-@keyframes fadeInDown{
-    0% {
-        opacity: 0;
-        transform: translate3d(0, -20px, 0);
-    }
-
-    100% {
-        opacity: 1;
-        transform: none;
-    }
-}

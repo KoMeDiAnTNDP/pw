@@ -24,12 +24,12 @@ export class ListTransactions extends Component<IListProps, IListState> {
     };
 
     componentDidMount(): void {
-        this.fetchTransaction();
+        this.fetchTransaction(this.props.filter);
     }
 
     componentDidUpdate(prevProps: Readonly<IListProps>): void {
         if (this.props.refresh !== prevProps.refresh) {
-            this.fetchTransaction();
+            this.fetchTransaction(this.props.filter);
         }
 
         if (this.props.filter !== prevProps.filter) {
@@ -43,7 +43,7 @@ export class ListTransactions extends Component<IListProps, IListState> {
         this.setState({transactions: sortTransactions})
     }
 
-    fetchTransaction = () => {
+    fetchTransaction = (filter: string) => {
         const api = new API();
         const token = this.props.user.token;
 
@@ -56,7 +56,9 @@ export class ListTransactions extends Component<IListProps, IListState> {
                         this.setState({message: 'You have no transaction history yet.'})
                     }
                     else {
-                        this.setState({transactions: transactions});
+                        const sortTransaction = new List(transactions).sort(filter);
+
+                        this.setState({transactions: sortTransaction});
                     }
                 }
                 else {
@@ -72,11 +74,11 @@ export class ListTransactions extends Component<IListProps, IListState> {
             <div className={styles.listTransactionsWrapper}>
                 <div className={styles.listTransactions}>
                     {
-                        transactions.map((transaction, index) => {
+                        transactions.map(transaction => {
                             const {transactionClassName, transactionMessage} = List.getAnswer(transaction, message);
 
                             return (
-                                <p className={transactionClassName} key={index}>
+                                <p className={transactionClassName} key={transaction.id}>
                                     {transactionMessage}
                                 </p>
                             )
