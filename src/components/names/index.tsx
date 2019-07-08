@@ -29,6 +29,12 @@ export class Names extends Component<INamesProps, INamesState> {
         const api = new API();
         const token = this.props.user.token;
         const value = this.state.recipient;
+        console.log('не сразу');
+
+        if (value.length === 0) {
+            this.setState({suggestions: []});
+            return;
+        }
 
         api.getUserList(token, value)
             .then((data: [{id: number, name: string}] | string) => {
@@ -60,7 +66,8 @@ export class Names extends Component<INamesProps, INamesState> {
                               inputClassName={inputClassName}
                               onChange={this.handleNameChange}
                               suggestions={suggestions}
-                              completeMethod={this.getNames} delay={0}/>
+                              completeMethod={()=>{}}
+                              delay={0}/>
                 <label htmlFor="name">Name</label>
             </span>
         )

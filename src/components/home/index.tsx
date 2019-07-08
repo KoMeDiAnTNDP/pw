@@ -6,7 +6,6 @@ import styles from './home.module.css';
 import {HeadBar} from "../head";
 import {IUserInfo, IUserRegistration} from "../../types";
 import {Authorization} from "../authorization";
-import {API} from "../../core/api";
 import {Profile} from "../profile";
 import {Message} from "../message";
 import {Transactions} from "../transactions";
@@ -17,7 +16,6 @@ interface IHomeProps {
 
 interface IHomeState {
     user: IUserInfo;
-    isAuthorized: boolean;
     openAuthorization: boolean;
     openMessage: boolean;
     animation: boolean;
@@ -27,7 +25,6 @@ interface IHomeState {
 
 export class Home extends Component<IHomeProps, IHomeState>{
     state: IHomeState = {
-        isAuthorized: false,
         user: {
             id: '',
             name: '',
@@ -56,13 +53,13 @@ export class Home extends Component<IHomeProps, IHomeState>{
         this.setState({intervalId: intervalId})
     }
 
-    refreshData = () => {
-        this.setState({refresh: !this.state.refresh})
-    };
-
     componentWillUnmount() {
         clearInterval(this.state.intervalId);
     }
+
+    refreshData = () => {
+        this.setState({refresh: !this.state.refresh})
+    };
 
     handleOpenAuthorizationForm = () => {
         this.setState({openAuthorization: true});
@@ -73,50 +70,37 @@ export class Home extends Component<IHomeProps, IHomeState>{
     };
 
     handleCloseMessage = () => {
-        this.setState({
-            animation: true
-            }, () =>
+        this.setState({animation: true}, () =>
             setTimeout(() => {
-                this.setState({
-                    openMessage: false,
-                    animation: false
-                })
+                this.setState({openMessage: false, animation: false})
             }, 500)
         )
     };
 
     handleLogOut = () => {
         this.props.onChange();
-        this.setState({
-            isAuthorized: false,
-            user: this.clearUser
-        })
+        this.setState({user: this.clearUser})
+    };
+
+    getUserData = (user: IUserInfo) => {
+        this.setState({user: user});
     };
 
     handleAuthorizationSubmit = (user: IUserRegistration) => {
-        const api = new API();
-        api.getInfo(user.token).then(userInfo => {
-            if (typeof userInfo === 'object') {
-                const token = user.token;
-                const regUser =  {...userInfo.user_info_token, token};
+        const regUser = {...this.state.user};
+        regUser.token = user.token;
 
-                this.props.onChange();
-                this.setState({
-                    user: regUser,
-                    isAuthorized: true,
-                }, this.handleCloseMessage)
-            }
-        });
+        this.setState({user: regUser}, this.handleCloseMessage);
+        this.props.onChange();
     };
 
     handleTransactionSubmit = () => {
-        this.setState({
-            refresh: true,
-        });
+        this.setState({refresh: !this.state.refresh});
     };
 
     render() {
-        const {user, isAuthorized, openAuthorization, openMessage, animation, refresh} = this.state;
+        const {user, openAuthorization, openMessage, animation, refresh} = this.state;
+        const isAuthorized = !!user.token;
 
         return (
             <div className={styles.home}>
@@ -128,8 +112,18 @@ export class Home extends Component<IHomeProps, IHomeState>{
                                onClose={this.handleCloseAuthorizationForm}
                                visible={openAuthorization}/>
                 <div className={cn(styles.content, 'p-grid')}>
-                    {isAuthorized && <Profile user={user} refresh={refresh}/>}
-                    {isAuthorized && <Transactions user={user} refresh={refresh} onSubmit={this.handleTransactionSubmit}/>}
+                    {
+                        isAuthorized &&
+                        <Profile token={user.token}
+                                 refresh={refresh}
+                                 getProfile={this.getUserData}/>
+                    }
+                    {
+                        isAuthorized &&
+                        <Transactions user={user}
+                                      refresh={refresh}
+                                      onSubmit={this.handleTransactionSubmit}/>
+                    }
                 </div>
                 <Message onClose={this.handleCloseMessage}
                          visible={openMessage}

@@ -2,13 +2,13 @@ import React, {Component} from 'react';
 
 import cn from 'classnames';
 import {Panel} from "primereact/panel";
-import {Button} from "primereact/button";
 
 import './transactions.css';
 import {IUserInfo} from "../../types";
 import {Transaction} from "../transactionFormWrapper";
 import {ListTransactions} from "../listTransactions";
 import {Filter} from "../filter";
+import {FormButton} from "../Buttons";
 
 interface ITransactionsProps {
     user: IUserInfo;
@@ -50,19 +50,26 @@ export class Transactions extends Component<ITransactionsProps, ITransactionStat
         return (
             <div className={cn('transactionsContainers', 'p-col-12 p-md-8 p-lg-6')}>
                 <Panel header='Transactions' className='transactions'>
-                    <Button className='makeTransaction'
-                            icon='pi pi-plus'
-                            onClick={this.handleOpenForm}
-                            title='Make new transaction'/>
+                    <FormButton image='pi pi-plus'
+                                title='Make new transaction'
+                                onClick={this.handleOpenForm}/>
                     <div className='filters'>
                         <div>
                             <span className='filters__text'>Filters:</span>
                         </div>
-                        <Filter name='date' checked={filter === 'date'} onChooseFilter={this.handleChooseFilter}/>
-                        <Filter name='name' checked={filter === 'name'} onChooseFilter={this.handleChooseFilter}/>
-                        <Filter name='amount' checked={filter === 'amount'} onChooseFilter={this.handleChooseFilter}/>
+                        <Filter name='date'
+                                checked={filter === 'date'}
+                                onChooseFilter={this.handleChooseFilter}/>
+                        <Filter name='name'
+                                checked={filter === 'name'}
+                                onChooseFilter={this.handleChooseFilter}/>
+                        <Filter name='amount'
+                                checked={filter === 'amount'}
+                                onChooseFilter={this.handleChooseFilter}/>
                     </div>
-                    <ListTransactions user={user} filter={filter} refresh={refresh}/>
+                    <ListTransactions user={user}
+                                      filter={filter}
+                                      refresh={refresh}/>
                 </Panel>
                 <Transaction user={user}
                              visible={openTransactionsForm}

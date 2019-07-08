@@ -45,8 +45,9 @@ export class AuthorizationForm extends Component<IRegisterProps, IRegisterState>
 
     validationFormFields(fieldName: string, value: string) {
         const {errorMessage, validForm} = this.state;
+        const {registration} =  this.props;
         const validation = new Validation(errorMessage, validForm);
-        const {fieldValidationMessage, validationForm} = validation.validationAuthFields(fieldName, value, this.props.registration);
+        const {fieldValidationMessage, validationForm} = validation.validationAuthFields(fieldName, value, registration);
 
         this.setState({
             errorMessage: fieldValidationMessage,
@@ -90,9 +91,9 @@ export class AuthorizationForm extends Component<IRegisterProps, IRegisterState>
         return (
             <div className={styles.registerContainer}>
                 <div className={styles.formErrors}>
-                    {registration && errorMessage.username && <FormError name='username' text={errorMessage.username}/>}
-                    {errorMessage.email && <FormError name='email' text={errorMessage.email}/>}
-                    {errorMessage.password && <FormError name='password' text={errorMessage.password}/>}
+                    {registration && errorMessage.username && <FormError text={errorMessage.username}/>}
+                    {errorMessage.email && <FormError text={errorMessage.email}/>}
+                    {errorMessage.password && <FormError text={errorMessage.password}/>}
                 </div>
                 <form className={styles.registerForm} method="POST" onSubmit={this.handleSubmit}>
                     {

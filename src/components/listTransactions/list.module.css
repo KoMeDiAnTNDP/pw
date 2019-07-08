@@ -16,6 +16,11 @@
     width: 100%;
 }
 
+.transaction
+{
+    margin: 9px 0;
+}
+
 .transaction:first-child
 {
     margin-top: 0;

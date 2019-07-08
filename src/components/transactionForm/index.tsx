@@ -71,11 +71,9 @@ export class TransactionForm extends Component<ITransactionFormProps, ITransacti
 
     handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+
         const {user, recipient, amount} = this.state;
-        const body = {
-            name: recipient,
-            amount: amount
-        };
+        const body = {name: recipient, amount: amount};
 
         const api = new API();
         api.makeTransaction(user.token, body)
@@ -96,8 +94,8 @@ export class TransactionForm extends Component<ITransactionFormProps, ITransacti
         return (
             <div className={styles.transactionFromContainer}>
                 <div className={styles.transactionsErrors}>
-                    {errorMessage.username && <FormError name="name" text={errorMessage.username} transaction={true}/>}
-                    {errorMessage.balance && <FormError name="balance" text={errorMessage.balance} transaction={true}/>}
+                    {errorMessage.username && <FormError text={errorMessage.username}/>}
+                    {errorMessage.balance && <FormError text={errorMessage.balance}/>}
                 </div>
                 <form className={styles.transactionForm} method="POST" onSubmit={this.handleSubmit}>
                     <Names user={user} getName={this.getName} getError={this.getError}/>

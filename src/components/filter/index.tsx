@@ -26,13 +26,13 @@ export class Filter extends Component<IFilterProps, IFilterState> {
 
     handleChange = (event: {originalEvent: Event, value: any}) => {
         const filter = this.props.checked ? '' : event.value;
+
         this.setState({filter: filter});
         this.props.onChooseFilter(filter);
     };
 
     render() {
         const {name, checked} = this.props;
-
         const filterClassName = checked ? styles.filter_checked : styles.filter;
 
         return (

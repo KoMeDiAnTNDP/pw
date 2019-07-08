@@ -25,7 +25,7 @@ export class Field extends Component<IFieldProps, IFieldState> {
     };
 
     checkNumbers = (value: string) => {
-        if (isNaN(Number(value))) {
+        if (isNaN(Number(value)) || /\s+/.test(value)) {
             return;
         }
 
@@ -40,8 +40,8 @@ export class Field extends Component<IFieldProps, IFieldState> {
             this.checkNumbers(value);
         }
         else {
-            this.props.getValue(this.props.id, value);
-            this.setState({value: value});
+            this.props.getValue(this.props.id, value.trim());
+            this.setState({value: value.trim()});
         }
     };
 
