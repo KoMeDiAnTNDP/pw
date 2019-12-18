@@ -66,7 +66,7 @@ export class Names extends Component<INamesProps, INamesState> {
                               inputClassName={inputClassName}
                               onChange={this.handleNameChange}
                               suggestions={suggestions}
-                              completeMethod={()=>{}}
+                              completeMethod={this.getNames}
                               delay={0}/>
                 <label htmlFor="name">Name</label>
             </span>

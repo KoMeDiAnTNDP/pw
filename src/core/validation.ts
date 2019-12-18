@@ -25,9 +25,11 @@ export class Validation {
         let invalidField = '';
 
         if (fieldName === 'username') {
-            console.log(value);
             invalidField = !value.replace(/\s/g, '').length
                 ? 'Username cannot contain only spaces' : errorMessage;
+        }
+        else {
+            invalidField = errorMessage
         }
 
         return value.length === 0 ? `Field "${name}" must not be empty` : invalidField;
